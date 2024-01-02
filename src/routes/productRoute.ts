@@ -1,9 +1,5 @@
 import express from "express";
-import {
-  verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-} from "../utils/jwtUtils";
+import { verifyToken, verifyTokenAndAdmin } from "../utils/jwtUtils";
 import {
   getAllProducts,
   createProduct,

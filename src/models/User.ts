@@ -13,8 +13,8 @@ export interface IUser extends Document {
 // Create a schema for the User model
 const userSchema: Schema<IUser> = new Schema(
   {
-    email: { type: String, required: true },
-    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
     savedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],

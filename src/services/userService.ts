@@ -67,10 +67,30 @@ export const getAllUsers = async (): Promise<IUser[]> => {
 };
 
 // Get user by ID with his saved products
+// export const getUserById = async (userId: string): Promise<IUser | null> => {
+//   try {
+//     const user = await User.findById(userId).populate("savedProducts");
+//     return user;
+//   } catch (error) {
+//     throw new Error(`Error getting user: ${error.message}`);
+//   }
+// };
+
+// Function to populate user with savedProducts
+export const populateUser = async (user: IUser): Promise<IUser> => {
+  return User.populate(user, { path: "savedProducts" });
+};
+
+// Get user by ID with his saved products
 export const getUserById = async (userId: string): Promise<IUser | null> => {
   try {
-    const user = await User.findById(userId).populate("savedProducts");
-    return user;
+    const user = await User.findById(userId);
+    if (user) {
+      const populatedUser = await populateUser(user);
+      return populatedUser;
+    } else {
+      return null;
+    }
   } catch (error) {
     throw new Error(`Error getting user: ${error.message}`);
   }
@@ -80,11 +100,12 @@ export const getUserById = async (userId: string): Promise<IUser | null> => {
 export const updateUser = async (
   userId: string,
   updatedUser: Partial<IUser>
-): Promise<IUser | null> => {
+): Promise<unknown> => {
   try {
     const user = await User.findByIdAndUpdate(userId, updatedUser, {
       new: true,
     });
+    console.log(user, "user after update");
     return user;
   } catch (error) {
     throw new Error(`Error updating user: ${error.message}`);

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as UserService from "../services/userService";
+import User from "../models/User";
 
 // Create a new user
 export const createUser = async (
@@ -17,12 +18,12 @@ export const createUser = async (
 // Login user
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
-
   try {
     const { user, token } = await UserService.loginUser(email, password);
     res.status(200).json({ user, token });
   } catch (error) {
-    res.status(401).json({ error: error.message });
+    console.log(error);
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -60,17 +61,18 @@ export const getUserById = async (
 export const updateUser = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<unknown> => {
   try {
-    const updatedUser = await UserService.updateUser(
-      req.params.userId,
-      req.body
-    );
-    if (updatedUser) {
-      res.status(200).json(updatedUser);
-    } else {
-      res.status(404).json({ error: "User not found" });
+    const availableUser = await User.findById(req.params.id);
+
+    if (!availableUser) {
+      console.log(" user not found");
+      return res.status(404).json({ error: "User not found" });
     }
+    console.log(availableUser);
+    const updatedUser = await UserService.updateUser(req.params.id, req.body);
+
+    return res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

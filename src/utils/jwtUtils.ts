@@ -4,8 +4,8 @@ import jwt, { VerifyErrors } from "jsonwebtoken";
 import { Types } from "mongoose";
 
 // Generate jwt token
-type JWTPayload = {
-  id: Types.ObjectId;
+export type JWTPayload = {
+  id: Types.ObjectId | string;
   username: string;
   email: string;
   isAdmin: boolean;
@@ -32,7 +32,6 @@ export const generateToken = (payload: JWTPayload): string => {
   return token;
 };
 
-// Verify token
 export const verifyToken = (
   req: CustomRequest,
   res: Response,
@@ -52,12 +51,17 @@ export const verifyToken = (
       token,
       process.env.JWT_SEC,
       (err: VerifyErrors | null, user: any) => {
-        if (err) return res.status(403).json("Token is not valid!");
-        req.user = user;
-        next();
+        if (err) {
+          // Use the res object with a status function
+          res.status(403).json("Token is not valid!");
+        } else {
+          req.user = user;
+          next();
+        }
       }
     );
   } else {
+    // Use the res object with a status function
     res.status(401).json("You are not authenticated!");
   }
 };
@@ -72,7 +76,7 @@ export const verifyTokenAndAuthorization = (
     if (req.user.id.toString() === req.params.id || req.user.isAdmin) {
       next();
     } else {
-      return res.status(403).json("You are not allowed to do that!");
+      res.status(403).json("You are not allowed to do that!");
     }
   });
 };

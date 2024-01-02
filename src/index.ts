@@ -5,8 +5,10 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import routes from "./routes";
+import morgan from "morgan";
 
 dotenv.config();
+app.use(morgan("common"));
 
 // USE HELMET AND CORS MIDDLEWARES
 app.use(
@@ -44,7 +46,9 @@ mongoose
 
 app.get("/", async (req: express.Request, res: express.Response) => {
   try {
-    res.send("Welcome to Code With Vicent API");
+    res.send(
+      "Welcome to unit testing guide for nodejs, typescript and express"
+    );
   } catch (err) {
     console.log(err);
   }
@@ -55,8 +59,12 @@ app.use("/api/v1/", routes());
 
 // Start backend server
 const PORT = process.env.PORT || 8800;
-app.listen(PORT, () => {
-  console.log(`Backend server is running at port ${PORT}`);
-});
+
+// Check if it's not a test environment before starting the server
+if (!process.env.TEST_ENV) {
+  app.listen(PORT, () => {
+    console.log(`Backend server is running at port ${PORT}`);
+  });
+}
 
 export default app;
