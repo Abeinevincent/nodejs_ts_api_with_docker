@@ -16,13 +16,20 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Load Environment Variables
+        run: |
+          cp .env .env  # Copy the example .env file (replace with your actual filename)
+          npm install dotenv
+
       - name: Run Unit Tests
+        env:
+          MONGODB_URL: ${{ secrets.MONGODB_URL }} # Add other environment variables as needed
         run: npm test
 
   build:
     runs-on: ubuntu-latest
 
-    # needs: test
+    needs: test
 
     steps:
       - name: Checkout Repository
