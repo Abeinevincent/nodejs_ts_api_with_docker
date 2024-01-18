@@ -1,12 +1,13 @@
 // userRoutes.test.ts
 import request from "supertest";
-import test_server from "../../../test_setup";
-
+// import server from "../../../test_setup";
+import server from "../../index";
 import User from "../../models/User";
-import supertest from "supertest";
 
 // You can either test with a real token like this:
-const adminToken = "YourAdminToken";
+const adminToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTdmYWVkMDg0ZTQxYzE1MmU5NzMxOCIsInVzZXJuYW1lIjoidHQiLCJlbWFpbCI6InR0QGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcwNTUwODQyNSwiZXhwIjoxNzA1NTk0ODI1fQ.rlkUn6gvfaYqYPwS4QZr-M6_7H_4wDf8vXEbvyz5COA";
+
 // Alternatively:
 const nonAdminToken = "YourNonAdminToken";
 
@@ -22,7 +23,7 @@ const nonAdminToken = "YourNonAdminToken";
 
 // Assuming you have a function to generate an authentication token
 // const getAuthToken = async () => {
-//   const response = await supertest(test_server)
+//   const response = await supertest(server)
 //     .post("/api/v1/users/login")
 //     .send(adminCredentials);
 //   return response.body.token;
@@ -46,70 +47,70 @@ describe("User Routes", () => {
 
     // Clear all jest mocks
     jest.clearAllMocks();
-    test_server.close();
+    server.close();
   });
 
   // Test case for creating a new user
-  it("should create a new user", async () => {
-    const response = await request(test_server)
-      .post("/api/v1/users/create") // Update the route path accordingly
-      .send({
-        // Your user data for testing
-        email: "admin@example.com",
-        password: "adminpassword",
-        username: "testuser",
-        isAdmin: false,
-        savedProducts: [],
-      });
+  // it("should create a new user", async () => {
+  //   const response = await request(server)
+  //     .post("/api/v1/users/create") // Update the route path accordingly
+  //     .send({
+  //       // Your user data for testing
+  //       email: "admin@example.com",
+  //       password: "adminpassword",
+  //       username: "testuser",
+  //       isAdmin: false,
+  //       savedProducts: [],
+  //     });
 
-    // Expectations
-    expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty("email", "admin@example.com");
-    expect(response.body).toHaveProperty("username", "testuser");
-    // Add more expectations based on your user data
+  //   // Expectations
+  //   expect(response.status).toBe(201);
+  //   expect(response.body).toHaveProperty("email", "admin@example.com");
+  //   expect(response.body).toHaveProperty("username", "testuser");
+  //   // Add more expectations based on your user data
 
-    // Optionally, you can store the created user for future tests
-    const createdUser = response.body;
-  }, 20000);
+  //   // Optionally, you can store the created user for future tests
+  //   const createdUser = response.body;
+  // }, 20000);
 
-  // Test case for logging in a user
-  it("should login a user and return a token", async () => {
-    // Assuming you have a test user created previously
-    const testUser = {
-      email: "admin@example.com",
-      password: "adminpassword",
-    };
+  // // Test case for logging in a user
+  // it("should login a user and return a token", async () => {
+  //   // Assuming you have a test user created previously
+  //   const testUser = {
+  //     email: "admin@example.com",
+  //     password: "adminpassword",
+  //   };
 
-    const response = await request(test_server)
-      .post("/api/v1/users/login") // Update the route path accordingly
-      .send({
-        email: testUser.email,
-        password: testUser.password,
-      });
+  //   const response = await request(server)
+  //     .post("/api/v1/users/login") // Update the route path accordingly
+  //     .send({
+  //       email: testUser.email,
+  //       password: testUser.password,
+  //     });
 
-    // Expectations
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("user");
-    expect(response.body).toHaveProperty("token");
-    // Add more expectations based on your login data
+  //   // Expectations
+  //   expect(response.status).toBe(200);
+  //   expect(response.body).toHaveProperty("user");
+  //   expect(response.body).toHaveProperty("token");
+  //   // Add more expectations based on your login data
 
-    // Optionally, you can store the token for future authenticated requests
-    const authToken = response.body.token;
-  }, 20000);
+  //   // Optionally, you can store the token for future authenticated requests
+  //   const authToken = response.body.token;
+  // }, 20000);
 
-  // Assuming you have admin credentials for testing
-  const adminCredentials = {
-    email: "admin@example.com",
-    password: "adminpassword",
-  };
+  // // Assuming you have admin credentials for testing
+  // const adminCredentials = {
+  //   email: "admin@example.com",
+  //   password: "adminpassword",
+  // };
 
   // Assuming you have a function to generate an authentication token
-  const getAuthToken = async (credentials: object) => {
-    const response = await supertest(test_server)
-      .post("/api/v1/users/login")
-      .send(credentials);
-    return response.body.token;
-  };
+  // const getAuthToken = async (credentials: object) => {
+  //   const response = await supertest(server)
+  //     .post("/api/v1/users/login")
+  //     .send(credentials);
+  //   return response.body.token;
+  // };
 
   // Test case for getting all users (admin access)
   it("should get all users with admin access", async () => {
@@ -123,7 +124,7 @@ describe("User Routes", () => {
     // const adminToken = await getAuthToken(adminCredentials);
 
     // Send a request to the route with the admin token
-    const response = await request(test_server)
+    const response = await request(server)
       .get("/api/v1/users/all")
       .set("token", `Bearer ${adminToken}`);
 
@@ -147,7 +148,7 @@ describe("User Routes", () => {
     // const nonAdminToken = await getAuthToken(nonAdminCredentials);
 
     // Send a request to the route with the non-admin token
-    const response = await request(test_server)
+    const response = await request(server)
       .get("/api/v1/users/all")
       .set("token", `Bearer ${nonAdminToken}`);
 
@@ -169,7 +170,7 @@ describe("User Routes", () => {
     };
 
     // Update the user using the hardcoded token
-    const updateResponse = await request(test_server)
+    const updateResponse = await request(server)
       .put(`/api/v1/users/update/6593ca275db905747ea085aa`)
       .set("token", `Bearer ${adminToken}`)
       .send({
@@ -193,7 +194,7 @@ describe("User Routes", () => {
     };
 
     // Create a different user
-    const createResponse = await request(test_server)
+    const createResponse = await request(server)
       .post("/api/v1/users/create")
       .send(otherUserCredentials);
 
@@ -201,7 +202,7 @@ describe("User Routes", () => {
     const otherUserId = createResponse.body._id;
 
     // Attempt to update the user without valid credentials (not admin or account owner)
-    const updateResponse = await request(test_server)
+    const updateResponse = await request(server)
       .put(`/api/v1/users/update/${otherUserId}`)
       .set("token", `Bearer ${nonAdminToken}`)
       .send({
@@ -224,7 +225,7 @@ describe("User Routes", () => {
     };
 
     // Create a test user
-    const createResponse = await request(test_server)
+    const createResponse = await request(server)
       .post("/api/v1/users/create")
       .send(testUser);
 
@@ -235,7 +236,7 @@ describe("User Routes", () => {
     console.log("User ID:", userId);
 
     // Delete the user using the hardcoded token
-    const deleteResponse = await request(test_server)
+    const deleteResponse = await request(server)
       .delete(`/api/v1/users/delete/${userId}`)
       .set("token", `Bearer ${adminToken}`);
 

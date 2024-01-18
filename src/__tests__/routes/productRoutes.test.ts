@@ -1,11 +1,13 @@
 import request from "supertest";
-import test_server from "../../../test_setup";
-import supertest from "supertest";
+// import server from "../../../test_setup";
+import server from "../../index";
 
 // You can either test with a real token like this:
-const adminToken = "YourAdminToken";
+const adminToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTdmYWVkMDg0ZTQxYzE1MmU5NzMxOCIsInVzZXJuYW1lIjoidHQiLCJlbWFpbCI6InR0QGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcwNTUwODQyNSwiZXhwIjoxNzA1NTk0ODI1fQ.rlkUn6gvfaYqYPwS4QZr-M6_7H_4wDf8vXEbvyz5COA";
 // Alternatively:
-const nonAdminToken = "YourNonAdminToken";
+// const nonAdminToken =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTdmYWVkMDg0ZTQxYzE1MmU5NzMxOCIsInVzZXJuYW1lIjoidHQiLCJlbWFpbCI6InR0QGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3MDU1MDc1NzQsImV4cCI6MTcwNTU5Mzk3NH0.HDX5oH2IL2WEngBmlc7LUpIusficdyHYwl_Z6rG0y1o";
 
 // OR
 // Write a function that simulates an actual login process and extract the token from there
@@ -19,7 +21,7 @@ const nonAdminToken = "YourNonAdminToken";
 
 // Assuming you have a function to generate an authentication token
 // const getAuthToken = async () => {
-//   const response = await supertest(test_server)
+//   const response = await supertest(server)
 //     .post("/api/v1/users/login")
 //     .send(adminCredentials);
 //   return response.body.token;
@@ -44,7 +46,7 @@ describe("Product Routes", () => {
   // Test case: Should successfully create a new product with valid admin credentials
   it("should successfully create a new product with valid admin credentials", async () => {
     // Create a new product using the admin token
-    const createResponse = await request(test_server)
+    const createResponse = await request(server)
       .post("/api/v1/products/create")
       .set("token", `Bearer ${adminToken}`)
       .send(testProduct);
@@ -58,7 +60,7 @@ describe("Product Routes", () => {
   // Test case: Should successfully get all products without authentication
   it("should successfully get all products without authentication", async () => {
     // Make a request to the endpoint without providing an authentication token
-    const response = await request(test_server).get("/api/v1/products/all");
+    const response = await request(server).get("/api/v1/products/all");
 
     // Expectations
     expect(response.status).toBe(200);
@@ -71,7 +73,7 @@ describe("Product Routes", () => {
     const productId = "6593e048731070abb0939faf";
 
     // Make a request to the endpoint with a valid token and product ID
-    const response = await request(test_server)
+    const response = await request(server)
       .get(`/api/v1/products/${productId}`)
       .set("token", `Bearer ${adminToken}`);
 
@@ -93,7 +95,7 @@ describe("Product Routes", () => {
     };
 
     // Make a request to the endpoint with an admin token and product ID
-    const response = await request(test_server)
+    const response = await request(server)
       .put(`/api/v1/products/update/${productId}`)
       .set("token", `Bearer ${adminToken}`)
       .send(updatedProductData);
@@ -109,7 +111,7 @@ describe("Product Routes", () => {
     const productId = "6593e0a5451f5e47ce363e00";
 
     // Make a request to the endpoint with an admin token and product ID
-    const response = await request(test_server)
+    const response = await request(server)
       .delete(`/api/v1/products/delete/${productId}`)
       .set("token", `Bearer ${adminToken}`);
 
@@ -120,5 +122,5 @@ describe("Product Routes", () => {
 });
 
 afterAll(() => {
-  test_server.close();
+  server.close();
 });

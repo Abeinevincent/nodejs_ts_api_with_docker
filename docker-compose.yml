@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  node-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8800:8800"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env # Use the same .env file for both services
+    working_dir: /usr/src/app
+    volumes:
+      - /home/abeine/eoyprojects/nodejsapis/containerisedprojects/node_ts_api_with_docker:/usr/src/app
+    command: npm run dev
+
+  mongodb:
+    image: mongo
+    env_file:
+      - .env # Use the same .env file for both services
+    volumes:
+      - mongodb-data:/data/db
+
+volumes:
+  mongodb-data:

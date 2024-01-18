@@ -61,10 +61,12 @@ app.use("/api/v1/", routes());
 const PORT = process.env.PORT || 8800;
 
 // Check if it's not a test environment before starting the server
-if (!process.env.TEST_ENV) {
-  app.listen(PORT, () => {
-    console.log(`Backend server is running at port ${PORT}`);
-  });
-}
+// if (!process.env.TEST_ENV) {
+// if (process.env.NODE_ENV !== "test") {
+const server = app.listen(PORT, () => {
+  console.log(`Backend server is running at portt ${PORT}`);
+});
+// }
+// }
 
-export default app;
+export default server;

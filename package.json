@@ -1,11 +1,11 @@
 {
-  "name": "unit_testing_api_guide",
+  "name": "node_ts_api_with_docker",
   "version": "1.0.0",
   "description": "",
   "main": "dist/src/index.js",
   "module": "module",
   "engines": {
-    "node": "18.17.1"
+    "node": "20.8.0"
   },
   "scripts": {
     "build": "tsc",

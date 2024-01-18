@@ -6,9 +6,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Mock token for testing purposes
-const mockTokenForNonAdmin = "YourMockTokenForNonAdmin";
+const mockTokenForNonAdmin =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTdmYWVkMDg0ZTQxYzE1MmU5NzMxOCIsInVzZXJuYW1lIjoidHQiLCJlbWFpbCI6InR0QGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3MDU1MDc1NzQsImV4cCI6MTcwNTU5Mzk3NH0.HDX5oH2IL2WEngBmlc7LUpIusficdyHYwl_Z6rG0y1g";
 
-const mockTokenForAdmin = "YourMockTokenForAdmin";
+// const mockTokenForAdmin = "YourMockTokenForAdmin";
 // You can also simulate an actual login process,
 // extract the token and store it in a variable like this:
 
