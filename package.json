@@ -11,7 +11,7 @@
     "build": "tsc",
     "start": "npm run build && node dist/src/index.js",
     "dev": "nodemon",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --runInBand --forceExit"
   },
   "keywords": [],
   "author": "",
