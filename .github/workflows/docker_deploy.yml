@@ -18,7 +18,9 @@ jobs:
 
       - name: Run Unit Tests
         env:
-          MONGODB_URL: ${{ secrets.MONGODB_URL }} # Add other environment variables as needed
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
+          JWT_EXPIRY_PERIOD: ${{ secrets.JWT_EXPIRY_PERIOD }}
+          JWT_SEC: ${{ secrets.JWT_SEC }}
         run: npm test
 
   build:

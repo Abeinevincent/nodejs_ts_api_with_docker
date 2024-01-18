@@ -11,7 +11,7 @@
     "build": "tsc",
     "start": "npm run build && node dist/src/index.js",
     "dev": "nodemon",
-    "test": "jest --watchAll --detectOpenHandles"
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
